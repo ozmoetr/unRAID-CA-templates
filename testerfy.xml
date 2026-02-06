@@ -2,7 +2,7 @@
 <Container version="2">
   <Name>Testerfy</Name>
   <Repository>ghcr.io/ozmoetr/testerfy:latest</Repository>
-  <Registry>https://ghcr.io/ozmoetr/testerfy</Registry>
+  <Registry>https://github.com/ozmoetr/testerfy</Registry>
   <Branch>
     <Tag>latest</Tag>
     <TagDescription>Latest stable release</TagDescription>
@@ -12,35 +12,75 @@
   <Privileged>false</Privileged>
   <Support>https://github.com/ozmoetr/testerfy/issues</Support>
   <Project>https://github.com/ozmoetr/testerfy</Project>
-  <Overview>Testerfy is a Spotify track rating app that lets you like/dislike tracks and automatically manages your library based on your ratings. Perfect for music discovery workflows.&#xD;
+  <Overview>Testerfy — Spotify Playlist Curation Made Easy&#xD;
 &#xD;
-**Requirements:**&#xD;
-- Spotify account (Free or Premium)&#xD;
-- Spotify Developer App credentials (Client ID &amp; Secret)&#xD;
+Burn through discovery playlists at lightning speed. Swipe right to like (saves to your target playlists and skips), swipe left to dislike (removes from source and skips). Every decision is logged with timestamps, decision speed, and listening stats — so you can track your taste over time.&#xD;
 &#xD;
-**Setup:**&#xD;
-1. Create a Spotify app at https://developer.spotify.com/dashboard&#xD;
-2. Set redirect URI to: http://[YOUR-UNRAID-IP]:5247/api/auth/callback (HTTPS recommended via Tailscale)&#xD;
-3. Copy your Client ID and Client Secret into the config below&#xD;
-4. Access WebUI and authenticate with Spotify&#xD;
+FEATURES:&#xD;
+- One-tap Like/Dislike with auto-skip to the next track&#xD;
+- Playlist Guard — prevents accidental changes when playing outside approved playlists&#xD;
+- Passive listening tracker — logs songs you hear without rating&#xD;
+- Decision time analytics — see how fast you judge tracks&#xD;
+- Full action history with undo support&#xD;
+- Mobile-friendly swipe interface&#xD;
+- Encrypted tokens at rest (AES-256-GCM)&#xD;
+- Pairs with Mellodex (github.com/ozmoetr/mellodex) for deep listening analytics&#xD;
 &#xD;
-**Tip:** Use Tailscale to access Testerfy securely from anywhere without exposing ports.</Overview>
-  <Category>MediaApp:Music Tools:</Category>
+REQUIREMENTS:&#xD;
+- Tailscale plugin (REQUIRED — provides HTTPS for Spotify OAuth)&#xD;
+- Spotify Premium (for playback control)&#xD;
+- Spotify Developer App (free — takes 2 minutes)&#xD;
+&#xD;
+================================================&#xD;
+ SETUP GUIDE (5 minutes)&#xD;
+================================================&#xD;
+&#xD;
+STEP 1: INSTALL TAILSCALE&#xD;
+Spotify requires HTTPS for authentication. Tailscale provides this for free.&#xD;
+- Unraid → Apps → Search "Tailscale" → Install&#xD;
+- Settings → Tailscale → Authenticate with your Tailscale account&#xD;
+&#xD;
+STEP 2: FIND YOUR TAILSCALE URL&#xD;
+Open Unraid terminal and run: tailscale status&#xD;
+Note your machine name (e.g. "tower" or "unraid").&#xD;
+Your URL will be: https://MACHINE.TAILNET.ts.net:5247&#xD;
+Find your tailnet name at: https://login.tailscale.com/admin/machines&#xD;
+&#xD;
+STEP 3: ENABLE TAILSCALE SERVE&#xD;
+Run in Unraid terminal (before clicking Apply):&#xD;
+  tailscale serve --bg --https 5247 http://localhost:5247&#xD;
+Wait 2-5 minutes, verify with: tailscale serve status&#xD;
+&#xD;
+STEP 4: CREATE SPOTIFY DEVELOPER APP&#xD;
+- Go to developer.spotify.com/dashboard&#xD;
+- Create App → Name it "Testerfy"&#xD;
+- Add Redirect URI: https://MACHINE.TAILNET.ts.net:5247/api/auth/callback&#xD;
+- Copy your Client ID and Client Secret&#xD;
+&#xD;
+STEP 5: GENERATE A SESSION SECRET&#xD;
+Run in terminal: openssl rand -hex 32&#xD;
+Copy the output — paste it in the Session Secret field below.&#xD;
+&#xD;
+STEP 6: FILL IN THE FIELDS BELOW AND CLICK APPLY&#xD;
+&#xD;
+Full guide: https://github.com/ozmoetr/testerfy#setup</Overview>
+  <Category>MediaApp:Music</Category>
   <WebUI>http://[IP]:[PORT:5247]/</WebUI>
   <TemplateURL>https://raw.githubusercontent.com/ozmoetr/unraid-templates/main/testerfy.xml</TemplateURL>
   <Icon>https://raw.githubusercontent.com/ozmoetr/testerfy/master/assets/logo.png</Icon>
   <ExtraParams/>
   <PostArgs/>
   <CPUset/>
-  <DateInstalled></DateInstalled>
-  <DonateText/>
-  <DonateLink/>
-  <Requires>Spotify Developer App credentials</Requires>
-  <Config Name="WebUI Port" Target="5247" Default="5247" Mode="tcp" Description="Web interface port" Type="Port" Display="always" Required="true" Mask="false">5247</Config>
-  <Config Name="App Data" Target="/data" Default="/mnt/user/appdata/testerfy" Mode="rw" Description="Persistent storage for config and database" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/testerfy</Config>
-  <Config Name="Spotify Client ID" Target="SPOTIFY_CLIENT_ID" Default="" Mode="" Description="From your Spotify Developer Dashboard" Type="Variable" Display="always" Required="true" Mask="false"></Config>
-  <Config Name="Spotify Client Secret" Target="SPOTIFY_CLIENT_SECRET" Default="" Mode="" Description="From your Spotify Developer Dashboard" Type="Variable" Display="always" Required="true" Mask="true"></Config>
-  <Config Name="Redirect URI" Target="SPOTIFY_REDIRECT_URI" Default="http://localhost:5247/api/auth/callback" Mode="" Description="Must match your Spotify app settings. Use your Unraid IP or Tailscale hostname (HTTPS required)." Type="Variable" Display="always" Required="true" Mask="false">http://localhost:5247/api/auth/callback</Config>
-  <Config Name="Session Secret" Target="SESSION_SECRET" Default="" Mode="" Description="Random string for session security. Generate with: openssl rand -hex 32" Type="Variable" Display="always" Required="true" Mask="true"></Config>
-  <Config Name="Timezone" Target="TZ" Default="America/Denver" Mode="" Description="Container timezone" Type="Variable" Display="advanced" Required="false" Mask="false">America/Denver</Config>
+  <DonateText>Support Testerfy Development</DonateText>
+  <DonateLink>https://github.com/sponsors/ozmoetr</DonateLink>
+  <Requires>Tailscale Plugin, Spotify Premium, Spotify Developer App</Requires>
+  <Config Name="Web UI Port" Target="5247" Default="5247" Mode="tcp" Description="Container port. Tailscale Serve handles external HTTPS on the same port." Type="Port" Display="always" Required="true" Mask="false">5247</Config>
+  <Config Name="Data Path" Target="/data" Default="/mnt/user/appdata/testerfy" Mode="rw" Description="Database and config storage. Back this up to preserve your history." Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/testerfy</Config>
+  <Config Name="Spotify Client ID" Target="SPOTIFY_CLIENT_ID" Default="" Mode="" Description="From developer.spotify.com → Dashboard → Your App → Settings" Type="Variable" Display="always" Required="true" Mask="false"/>
+  <Config Name="Spotify Client Secret" Target="SPOTIFY_CLIENT_SECRET" Default="" Mode="" Description="From developer.spotify.com → Dashboard → Your App → Settings → View client secret" Type="Variable" Display="always" Required="true" Mask="true"/>
+  <Config Name="Spotify Redirect URI" Target="SPOTIFY_REDIRECT_URI" Default="" Mode="" Description="https://YOUR-MACHINE.YOUR-TAILNET.ts.net:5247/api/auth/callback — must match your Spotify Developer Dashboard exactly" Type="Variable" Display="always" Required="true" Mask="false"/>
+  <Config Name="Session Secret" Target="SESSION_SECRET" Default="" Mode="" Description="Random security key. Generate with: openssl rand -hex 32" Type="Variable" Display="always" Required="true" Mask="true"/>
+  <Config Name="Timezone" Target="TZ" Default="America/New_York" Mode="" Description="Your timezone (e.g. America/Denver, Europe/London, Asia/Tokyo)" Type="Variable" Display="always" Required="false" Mask="false">America/New_York</Config>
+  <Config Name="Database Path" Target="DATABASE_PATH" Default="/data/testerfy.db" Mode="" Description="SQLite database path inside container (do not change unless migrating)" Type="Variable" Display="advanced" Required="false" Mask="false">/data/testerfy.db</Config>
+  <Config Name="Port" Target="PORT" Default="5247" Mode="" Description="Internal app port (do not change)" Type="Variable" Display="advanced" Required="false" Mask="false">5247</Config>
 </Container>
