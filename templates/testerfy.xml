@@ -31,7 +31,7 @@ Full guide: https://github.com/ozmoetr/testerfy#setup</Overview>
   <Category>MediaApp:Music</Category>
   <WebUI>http://[IP]:[PORT:5247]</WebUI>
   <TemplateURL>https://raw.githubusercontent.com/selfhosters/unRAID-CA-templates/master/templates/testerfy.xml</TemplateURL>
-  <Icon>https://raw.githubusercontent.com/ozmoetr/testerfy/master/assets/logo.png</Icon>
+  <Icon>https://raw.githubusercontent.com/selfhosters/unRAID-CA-templates/master/templates/img/testerfy.png</Icon>
   <DonateText>Support Testerfy Development</DonateText>
   <DonateLink>https://github.com/sponsors/ozmoetr</DonateLink>
   <Requires>Optional: Tailscale plugin if you want HTTPS via tailscale serve (see Overview). Spotify Premium and a Spotify Developer App are required.</Requires>
