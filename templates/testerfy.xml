@@ -2,7 +2,7 @@
 <Container version="2">
   <Name>testerfy</Name>
   <Repository>ghcr.io/ozmoetr/testerfy:latest</Repository>
-  <Registry>https://github.com/ozmoetr/testerfy</Registry>
+  <Registry>https://github.com/ozmoetr/testerfy/pkgs/container/testerfy</Registry>
   <Branch>
     <Tag>latest</Tag>
     <TagDescription>Latest stable release</TagDescription>
@@ -12,6 +12,7 @@
   <Privileged>false</Privileged>
   <Support>https://github.com/ozmoetr/testerfy/issues</Support>
   <Project>https://github.com/ozmoetr/testerfy</Project>
+  <ExtraSearchTerms>spotify playlist music discovery oauth like dislike curation</ExtraSearchTerms>
   <Overview>Testerfy — Spotify Playlist Curation Made Easy&#xD;
 &#xD;
 Burn through discovery playlists at speed. Like saves to your target playlists and skips, dislike removes and skips. Every decision is logged with timestamps, decision speed, and listening stats.&#xD;
